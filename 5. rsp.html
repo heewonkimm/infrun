@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가위바위보</title>
+</head>
+<body>
+<style>
+    #computer {
+        width: 160px;
+        height: 200px;
+    }
+</style>
+<div id="computer"></div>
+<br><br>
+<div>
+    <button id="scissors" class="btn">가위</button>
+    <button id="rock" class="btn">바위</button>
+    <button id="paper" class="btn">보</button>
+</div>
+<br>
+<div id="score">0</div>
+
+
+<script>
+
+const $computer = document.querySelector('#computer');
+const $score = document.querySelector('#score');
+const $scissors = document.querySelector('#scissors');
+const $rock = document.querySelector('#rock');
+const $paper = document.querySelector('#paper');
+const IMG_URL = './rsp.png'
+// $computer.style.background = `url(${IMG_URL}) -464px 0`; // 0  -220px -440px
+// $computer.style.backgroundSize = 'auto 200px';
+
+const rspX = {
+    scissors: '0',
+    rock: '-220px',
+    paper: '-440px'
+};
+
+let computerChoice = 'scissors';
+const computerChangeHand = () => {
+    if(computerChoice === 'scissors') {// 가위면 주먹으로 바꾸고
+        computerChoice = 'rock';
+        
+    }else if(computerChoice === 'rock') {// 바위이면 보로 바꾸고
+        computerChoice = 'paper';
+    }else {// 보이면 가위로 바꾼다.
+        computerChoice = 'scissors';
+    }
+    $computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;// rsp.computerChoice와 rsp[computerChoice] 차이 알고 알맞게 사용하기
+    $computer.style.backgroundSize = 'auto 200px';
+}
+
+// setInterval과 비슷한 메서드로 setTimeout이 있는데 이 함수는 타이머가 정확하지 않다.
+// setInterval(()=> {computerChangeHand()},50) 축약!
+let intervalId =  setInterval(computerChangeHand, 50) 
+
+const scoreTable  = {
+    rock:'0',
+    scissors:'1',
+    paper:'-1'
+};
+
+// //방법1 연속 클릭헀을때 생긴는 버그 잡는 방법
+// const clickButton = () => {
+//     clearInterval(intervalId); //점수 계산 화면 표시
+//     setTimeout(() => {
+//         clearInterval(intervalId);// 방법1. 연속 클릭했으때 버그 잡기 위해
+//         intervalId = setInterval(computerChangeHand, 50); //달라진 intervalId에 값을 다시 담아주기 위해
+//     }, 1000);
+// };
+// $rock.addEventListener('click', clickButton);
+// $scissors.addEventListener('click', clickButton);
+// $paper.addEventListener('click', clickButton);
+
+
+// //방법2 연속 클릭헀을때 생긴는 버그 잡는 방법(추천XXX)
+// const clickButton = () => {
+//     clearInterval(intervalId); //점수 계산 화면 표시
+//     $rock.removeEventListener('click', clickButton);
+//     $scissors.removeEventListener('click', clickButton);
+//     $paper.removeEventListener('click', clickButton);
+//     setTimeout(() => {
+//         intervalId = setInterval(computerChangeHand, 50);
+//         $rock.addEventListener('click', clickButton);
+//         $scissors.addEventListener('click', clickButton);
+//         $paper.addEventListener('click', clickButton);
+//     }, 1000);
+// };
+// $rock.addEventListener('click', clickButton);
+//         $scissors.addEventListener('click', clickButton);
+//         $paper.addEventListener('click', clickButton);
+
+
+//방법3 연속 클릭헀을때 생긴는 버그 잡는 방법   clickable!!
+let clickable = true;
+let score = 0;
+const clickButton = () => {
+    if (clickable) {
+        clearInterval(intervalId); //점수 계산 화면 표시
+        clickable = false;
+
+        const myChoice = event.target.textContent === '바위' 
+        ? 'rock'
+        :event.target.textContent === '가위'
+        ? 'scissors'
+        : 'paper';
+
+        const myScore = scoreTable[myChoice];
+        const computerScore = scoreTable[computerChoice];
+        const diff = myScore - computerScore;
+
+        let message;
+        if (diff === 2 || diff === -1) { // = ['바나나', '사과', '오렌지'].includes(diff) -> 배열로 만들어서 includes 한것
+            score += 1;
+            message = '승리'
+        } else if (diff === -2 || diff === 1){
+            score -= 1;
+            message = '패배'
+        } else {
+            message = '무승부'
+        }
+        $score.textContent = `${message} 총: ${score}점`
+
+
+// 위 코드를 짧게 줄이기 전
+        // if (myChoice === 'rock') {
+        //     if (computerChoice === 'rock') {
+        //         console.log('무승부');
+        //     } else if (computerChoice === 'scissors') {
+        //         console.log('승리');
+        //     } else if (computerChoice === 'paper'){
+        //         console.log('패배');
+        //     }
+        // } else if (myChoice === 'scissors') {
+        //     if(computerChoice === 'rock'){
+        //         console.log('패배');
+        //     } else if (computerChoice === 'scissors') {
+        //         console.log('무승부');
+        //     } else if (computerChoice === 'paper') {
+        //         console.log('승리');
+        //     };
+        // } else if(myChoice === 'paper') {
+        //     if(computerChoice === 'rock'){
+        //         console.log('승리');
+        //     } else if (computerChoice === 'scissors') {
+        //         console.log('패배');
+        //     } else if (computerChoice === 'paper') {
+        //         console.log('무승부');
+        //     };
+        // };
+
+
+
+        setTimeout(() => {
+        clickable = true;
+        intervalId = setInterval(computerChangeHand, 50);
+    }, 1000);
+    }
+    
+};
+    $rock.addEventListener('click', clickButton);
+    $scissors.addEventListener('click', clickButton);
+    $paper.addEventListener('click', clickButton);
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

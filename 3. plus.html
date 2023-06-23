@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+
+<script>
+const answer = [3, 1, 4, 6];
+const value = '3214';
+let strike = 0;
+let ball = 0;
+for(let i = 0; i < answer.length; i++) {
+    const index = value.indexOf(answer[i]);
+    if(index > -1) {// 일치하는 숫자 발견
+        if(index === i) {// 자릿수도 같음
+            strike += 1;
+        } else {// 숫자만 같음
+            ball += 1;
+        }
+    }
+} 
+
+
+answer.forEach((element, i) => { // = number, index
+    const index = value.indexOf(answer[i]);
+    if(index > -1) {// 일치하는 숫자 발견
+        if(index === i) {// 자릿수도 같음
+            strike += 1;
+        } else {// 숫자만 같음
+            ball += 1;
+        }
+    }
+});
+
+
+const array = [1, 2, 3, 4];
+const result = [];
+// for(let i = 0; i < 4; i++) {
+//     result.push(array[i] * 2);
+// }
+
+array.map((element, i) => {
+    return element * 2
+})
+</script>
+
+</body>
+</html>

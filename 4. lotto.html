@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<style>
+    .ball {
+        display: inline-block;
+        border: 1px solid black;
+        border-radius: 20px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 20px;
+        text-align: center;
+        margin-right: 20px;
+    }
+</style>
+
+<div id="result">추첨 결과는?</div>
+<div id="bonus">보너스: </div>
+
+
+<script>
+
+const candidate = Array(45).fill().map((v, i) => i + 1);
+const shuffle = [];
+
+// 피셔-예이츠 셔플
+while (candidate.length > 0 ) {
+    const random = Math.floor(Math.random() * candidate.length); //무작위 인덱스 뽑기
+    const spliceArray = candidate.splice(random, 1); //뽑은 값은 배 열에 들어있음
+    const value = spliceArray[0]; //배열에 들어있는 값을 꺼내서
+    shuffle.push(value); //shuffle 배열에 넣기
+}
+/* for문으로 바꿔보가 */
+// for(let i = candidate.length; i > 0; i--){
+//     const random = Math.floor(Math.random() * i);
+//     const spliceArray = candidate.splice(random, 1);
+//     const value = spliceArray[0];
+//     shuffle.push(value);
+// };
+
+console.log(shuffle)
+const winBalls = shuffle.slice(0, 6).sort((a, b) => a - b) //앞에서 6개를 자르고 오름차순으로 정렬
+const bonus = shuffle[6]; // shuffle에서 7번째 공
+console.log(winBalls, bonus)
+
+const $result = document.querySelector('#result');
+const $bonus = document.querySelector('#bonus')
+
+const showBall = (number, $target) => {
+    const $ball = document.createElement('div'); //div 태그를 만들어줌
+    $ball.className = 'ball'; //태그의 클래스 네임 ball 로 지정
+    $ball.textContent = number;
+    $target.appendChild($ball);
+}
+console.log(winBalls)
+
+for(let i = 0; i < winBalls.length; i++) {
+    setTimeout(() => {
+    showBall(winBalls[i], $result)
+}, (i + 1) * 1000);
+}
+
+setTimeout(() => {
+    showBall(bonus, $bonus)
+}, 7000);
+
+
+function func() {
+    console.log('hello')
+}
+
+setTimeout(()=>{
+    func();
+},3500)
+
+// = setTimeout(func, 3500)
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인프런 강의입니다.</title>
+</head>
+<body>
+
+<div><span id="order">1</span>번째 참가자</div>
+<div>제시어: <span id="word"></span></div>
+<input type="text">
+<button>입력</button>
+
+
+
+
+<script>
+
+const number = Number(prompt('몇 명이 참가하나요?!'));
+
+if(number) { // prompt창에서 '취소'를 누룰 경우 입력이 되지 않도록 (Nan)
+    const $button = document.querySelector('button');
+    const $input = document.querySelector('input');
+    const $order = document.querySelector('#order');
+    const $word = document.querySelector('#word');
+    let word; //제시어
+    let newWord; //새로운 제시어
+
+    const onClickButton = () => {
+        if(!word || word[word.length - 1] === newWord[0] && newWord.length === 3) { //세글자만 입력 되도록 알림
+            word = newWord;
+            $word.textContent =  word;
+
+            const order = parseInt($order.textContent);
+            if(order === number) {
+                $order.textContent = 1;
+            } else {
+                $order.textContent = order + 1;
+            }
+        } else {
+            alert('올바르지 않은 단어입니다.');
+        }
+        $input.value = '';
+        $input.focus();
+    };
+
+    const onInput = (event) => {
+        newWord = event.target.value;
+    };
+        $button.addEventListener('click', onClickButton);
+        $input.addEventListener('input', onInput);
+};
+
+
+
+
+</script>
+
+
+
+
+
+</body>
+</html>
